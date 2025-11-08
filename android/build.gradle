@@ -26,7 +26,7 @@ def getExtOrIntegerDefault(name) {
 }
 
 android {
-  namespace "com.techoptio.reactnativelivepitchdetection"
+  namespace "io.techopt.lib.reactnativelivepitchdetection"
 
   compileSdkVersion getExtOrIntegerDefault("compileSdkVersion")
 
