@@ -1,12 +1,15 @@
 import NativeReactNativeLivePitchDetection from './NativeReactNativeLivePitchDetection';
-import type { InitOptions } from './types';
+import type {
+  Options,
+  ReactNativeLivePitchDetectionEventCallback,
+} from './types';
 
 const ReactNativeLivePitchDetection = {
-  init: (options?: InitOptions) => {
-    NativeReactNativeLivePitchDetection.init(
+  setOptions: (options: Options) => {
+    NativeReactNativeLivePitchDetection.setOptions(
       options?.bufferSize ?? 4096,
       options?.minVolume ?? 0.0,
-      options?.updateIntervalMs ?? -1
+      options?.updateIntervalMs ?? 100
     );
   },
   startListening: () => {
@@ -15,8 +18,8 @@ const ReactNativeLivePitchDetection = {
   stopListening: () => {
     return NativeReactNativeLivePitchDetection.stopListening();
   },
-  addListener: () => {
-    return NativeReactNativeLivePitchDetection.addListener();
+  addListener: (callback: ReactNativeLivePitchDetectionEventCallback) => {
+    return NativeReactNativeLivePitchDetection.onFrequencyDetected(callback);
   },
   isListening: () => {
     return NativeReactNativeLivePitchDetection.isListening();
@@ -24,3 +27,5 @@ const ReactNativeLivePitchDetection = {
 };
 
 export default ReactNativeLivePitchDetection;
+
+export * from './types';

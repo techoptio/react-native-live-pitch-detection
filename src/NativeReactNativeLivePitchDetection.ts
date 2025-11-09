@@ -1,11 +1,11 @@
-import { TurboModuleRegistry, type TurboModule } from 'react-native';
+import { TurboModuleRegistry, type TurboModule, type CodegenTypes } from 'react-native';
 
 export interface Spec extends TurboModule {
-  init(bufferSize: number, minVolume: number, updateIntervalMs: number): void;
+  setOptions(bufferSize: number, minVolume: number, updateIntervalMs: number): void;
   startListening(): Promise<void>;
   stopListening(): Promise<void>;
-  addListener(): void;
   isListening(): boolean;
+  readonly onFrequencyDetected: CodegenTypes.EventEmitter<{ frequency: number }>;
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>('ReactNativeLivePitchDetection');

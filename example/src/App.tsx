@@ -1,14 +1,12 @@
 import { View, StyleSheet, Button, Alert, Platform } from 'react-native';
 import PitchDetection from '@techoptio/react-native-live-pitch-detection';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
-
-PitchDetection.init();
 
 export default function App() {
   const [isListening, setIsListening] = useState(false);
 
-  const requestMicrophonePermission = async () => {
+  const requestMicrophonePermission = useCallback(async () => {
     try {
       const permission =
         Platform.OS === 'ios'
@@ -36,16 +34,22 @@ export default function App() {
       );
       return false;
     }
-  };
+  }, []);
 
-  const handleStartListening = async () => {
+  const handleStartListening = useCallback(async () => {
     const hasPermission = await requestMicrophonePermission();
     if (hasPermission) {
       PitchDetection.startListening()
-        .then(() => setIsListening(true))
+        .then(() => {
+          setIsListening(true);
+
+          PitchDetection.addListener((event) => {
+            console.log('Frequency detected:', event.frequency);
+          });
+        })
         .catch((error) => console.error(error));
     }
-  };
+  }, [requestMicrophonePermission]);
 
   return (
     <View style={styles.container}>
