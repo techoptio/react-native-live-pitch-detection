@@ -1,10 +1,19 @@
-import { View, StyleSheet, Button, Alert, Platform } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Button,
+  Alert,
+  Platform,
+  type EventSubscription,
+} from 'react-native';
 import PitchDetection from '@techoptio/react-native-live-pitch-detection';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 
 export default function App() {
   const [isListening, setIsListening] = useState(false);
+
+  const listenerRef = useRef<EventSubscription | null>(null);
 
   const requestMicrophonePermission = useCallback(async () => {
     try {
@@ -43,7 +52,7 @@ export default function App() {
         .then(() => {
           setIsListening(true);
 
-          PitchDetection.addListener((event) => {
+          listenerRef.current = PitchDetection.addListener((event) => {
             console.log('Frequency detected:', event.frequency);
           });
         })
@@ -58,7 +67,11 @@ export default function App() {
         onPress={() => {
           if (isListening) {
             PitchDetection.stopListening()
-              .then(() => setIsListening(false))
+              .then(() => {
+                setIsListening(false);
+                listenerRef.current?.remove();
+                listenerRef.current = null;
+              })
               .catch((error) => console.error(error));
           } else {
             handleStartListening();
