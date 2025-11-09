@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   s.platforms    = { :ios => min_ios_version_supported }
   s.source       = { :git => "https://github.com/techoptio/react-native-live-pitch-detection.git", :tag => "#{s.version}" }
 
-  s.source_files = "ios/**/*.{h,m,mm,cpp}"
+  s.source_files = "ios/**/*.{h,m,mm,cpp}", "shared/**/*.{hpp,cpp,c,h}"
   s.private_header_files = "ios/**/*.h"
 
 

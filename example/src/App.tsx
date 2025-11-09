@@ -5,6 +5,7 @@ import {
   Alert,
   Platform,
   type EventSubscription,
+  Text,
 } from 'react-native';
 import PitchDetection from '@techoptio/react-native-live-pitch-detection';
 import { useState, useCallback, useRef } from 'react';
@@ -12,6 +13,8 @@ import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 
 export default function App() {
   const [isListening, setIsListening] = useState(false);
+  const [note, setNote] = useState('-');
+  const [frequency, setFrequency] = useState(-1);
 
   const listenerRef = useRef<EventSubscription | null>(null);
 
@@ -53,7 +56,8 @@ export default function App() {
           setIsListening(true);
 
           listenerRef.current = PitchDetection.addListener((event) => {
-            console.log('Frequency detected:', event.frequency);
+            setNote(event.note);
+            setFrequency(event.frequency);
           });
         })
         .catch((error) => console.error(error));
@@ -78,6 +82,14 @@ export default function App() {
           }
         }}
       />
+      {
+        isListening && (
+          <View style={styles.infoContainer}>
+            <Text style={styles.infoText}>Note: {note}</Text>
+            <Text style={styles.infoText}>Frequency: {frequency}</Text>
+          </View>
+        )
+      }
     </View>
   );
 }
@@ -87,5 +99,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  infoContainer: {
+    marginTop: 20,
+  },
+  infoText: {
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });

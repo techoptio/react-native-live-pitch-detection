@@ -25,7 +25,7 @@ class ReactNativeLivePitchDetectionModule(reactContext: ReactApplicationContext)
 
   private var updateIntervalMs: Int = 100
 
-  private var minVolume: Double = 0.0
+  private var minVolume: Double = -20.0
   private var bufferSize: Int = 4096
 
   override fun getName(): String {
@@ -78,6 +78,12 @@ class ReactNativeLivePitchDetectionModule(reactContext: ReactApplicationContext)
   }
 
   override fun stopListening(promise: Promise) {
+
+    if (!isListening) {
+      promise.reject("E_NOT_LISTENING", "Not listening")
+      return
+    }
+
     isListening = false
     audioRecord?.stop()
     audioRecord?.release()
