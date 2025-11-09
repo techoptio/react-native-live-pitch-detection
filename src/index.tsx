@@ -5,17 +5,18 @@ const ReactNativeLivePitchDetection = {
   init: (options?: InitOptions) => {
     NativeReactNativeLivePitchDetection.init(
       options?.bufferSize ?? 4096,
-      options?.minVolume ?? 0.0
+      options?.minVolume ?? 0.0,
+      options?.updateIntervalMs ?? -1
     );
   },
   startListening: () => {
-    NativeReactNativeLivePitchDetection.startListening();
+    return NativeReactNativeLivePitchDetection.startListening();
   },
   stopListening: () => {
-    NativeReactNativeLivePitchDetection.stopListening();
+    return NativeReactNativeLivePitchDetection.stopListening();
   },
   addListener: () => {
-    NativeReactNativeLivePitchDetection.addListener();
+    return NativeReactNativeLivePitchDetection.addListener();
   },
   isListening: () => {
     return NativeReactNativeLivePitchDetection.isListening();

@@ -5,4 +5,5 @@ export type PitchEvent = {
 export type InitOptions = {
     bufferSize?: number;
     minVolume?: number;
+    updateIntervalMs?: number;
 }

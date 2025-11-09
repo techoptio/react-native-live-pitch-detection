@@ -1,7 +1,7 @@
 import { TurboModuleRegistry, type TurboModule } from 'react-native';
 
 export interface Spec extends TurboModule {
-  init(bufferSize: number, minVolume: number): void;
+  init(bufferSize: number, minVolume: number, updateIntervalMs: number): void;
   startListening(): Promise<void>;
   stopListening(): Promise<void>;
   addListener(): void;
