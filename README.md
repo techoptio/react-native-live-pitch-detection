@@ -2,6 +2,10 @@
 
 Live pitch detection from device microphone for React Native.
 
+This package was heavily inspired by, but not a direct fork of, https://github.com/rnheroes/react-native-pitchy.
+
+This package is only compatible with the new architecture.
+
 ## Installation
 
 

@@ -1,14 +1,10 @@
-import { Text, View, StyleSheet } from 'react-native';
-import { multiply } from '@techoptio/react-native-live-pitch-detection';
+import { View, StyleSheet } from 'react-native';
+import PitchDetection from '@techoptio/react-native-live-pitch-detection';
 
-const result = multiply(3, 7);
+PitchDetection.init();
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Result: {result}</Text>
-    </View>
-  );
+  return <View style={styles.container}></View>;
 }
 
 const styles = StyleSheet.create({

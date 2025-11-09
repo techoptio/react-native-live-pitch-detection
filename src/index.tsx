@@ -1,5 +1,25 @@
-import ReactNativeLivePitchDetection from './NativeReactNativeLivePitchDetection';
+import NativeReactNativeLivePitchDetection from './NativeReactNativeLivePitchDetection';
+import type { InitOptions } from './types';
 
-export function multiply(a: number, b: number): number {
-  return ReactNativeLivePitchDetection.multiply(a, b);
-}
+const ReactNativeLivePitchDetection = {
+  init: (options?: InitOptions) => {
+    NativeReactNativeLivePitchDetection.init(
+      options?.bufferSize ?? 4096,
+      options?.minVolume ?? 0.0
+    );
+  },
+  startListening: () => {
+    NativeReactNativeLivePitchDetection.startListening();
+  },
+  stopListening: () => {
+    NativeReactNativeLivePitchDetection.stopListening();
+  },
+  addListener: () => {
+    NativeReactNativeLivePitchDetection.addListener();
+  },
+  isListening: () => {
+    return NativeReactNativeLivePitchDetection.isListening();
+  },
+};
+
+export default ReactNativeLivePitchDetection;
