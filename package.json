@@ -1,6 +1,6 @@
 {
   "name": "@techoptio/react-native-live-pitch-detection",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Live pitch detection (frequency, note and octave) from device microphone for React Native.",
   "main": "./lib/module/index.js",
   "types": "./lib/typescript/src/index.d.ts",
