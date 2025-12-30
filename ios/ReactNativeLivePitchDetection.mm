@@ -37,7 +37,26 @@
         return;
     }
   
-  NSError *error = nil;
+    AVAudioSession *session = [AVAudioSession sharedInstance];
+    NSError *error = nil;
+
+    [session setCategory:AVAudioSessionCategoryPlayAndRecord
+                    mode:AVAudioSessionModeMeasurement
+                 options:AVAudioSessionCategoryOptionDefaultToSpeaker
+                   error:&error];
+
+    if (error) {
+        reject(@"E_SET_CATEGORY_FAILED", @"Failed to set audio session category", error);
+        return;
+    }
+
+    error = nil;
+    [session setActive:YES error:&error];
+
+    if (error) {
+        reject(@"E_SET_ACTIVE_FAILED", @"Failed to activate audio session", error);
+        return;
+    }
 
     if (!_audioEngine) {
         _audioEngine = [[AVAudioEngine alloc] init];
@@ -45,21 +64,21 @@
         AVAudioInputNode *inputNode = [_audioEngine inputNode];
         
         AVAudioFormat *format = [inputNode inputFormatForBus:0];
+        if (format.sampleRate <= 0 || format.channelCount == 0) {
+            format = [inputNode outputFormatForBus:0];
+        }
+        if (format.sampleRate <= 0 || format.channelCount == 0) {
+            reject(@"E_INVALID_AUDIO_FORMAT", @"Invalid audio format for microphone input", nil);
+            return;
+        }
         _sampleRate = format.sampleRate;
 
-        [inputNode installTapOnBus:0 bufferSize:_bufferSize format:format block:^(AVAudioPCMBuffer * _Nonnull buffer, AVAudioTime * _Nonnull when) {
-            [self detectPitch:buffer];
-        }];
-
-        AVAudioSession *session = [AVAudioSession sharedInstance];
-        
-        [session setCategory:AVAudioSessionCategoryPlayAndRecord
-                        mode:AVAudioSessionModeMeasurement
-                     options:AVAudioSessionCategoryOptionDefaultToSpeaker
-                       error:&error];
-
-        if (error) {
-            reject(@"E_SET_CATEGORY_FAILED", @"Failed to set audio session category", error);
+        @try {
+            [inputNode installTapOnBus:0 bufferSize:_bufferSize format:format block:^(AVAudioPCMBuffer * _Nonnull buffer, AVAudioTime * _Nonnull when) {
+                [self detectPitch:buffer];
+            }];
+        } @catch (NSException *exception) {
+            reject(@"E_INSTALL_TAP_FAILED", exception.reason ?: @"Failed to install audio tap", nil);
             return;
         }
     }
@@ -124,4 +143,3 @@
 }
 
 @end
-
