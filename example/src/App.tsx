@@ -13,8 +13,8 @@ import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 
 export default function App() {
   const [isListening, setIsListening] = useState(false);
-  const [note, setNote] = useState('-');
-  const [frequency, setFrequency] = useState(-1);
+  const [note, setNote] = useState<string | null>(null);
+  const [frequency, setFrequency] = useState<number | null>(null);
 
   const listenerRef = useRef<EventSubscription | null>(null);
 
@@ -85,8 +85,10 @@ export default function App() {
       {
         isListening && (
           <View style={styles.infoContainer}>
-            <Text style={styles.infoText}>Note: {note}</Text>
-            <Text style={styles.infoText}>Frequency: {frequency}</Text>
+            <Text style={styles.infoText}>Note: {note ?? '—'}</Text>
+            <Text style={styles.infoText}>
+              Frequency: {frequency != null ? `${frequency.toFixed(1)} Hz` : '—'}
+            </Text>
           </View>
         )
       }
