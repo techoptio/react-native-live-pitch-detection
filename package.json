@@ -58,6 +58,8 @@
   },
   "homepage": "https://github.com/techoptio/react-native-live-pitch-detection#readme",
   "publishConfig": {
+    "access": "public",
+    "provenance": true,
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
@@ -114,7 +116,7 @@
       "tagName": "v${version}"
     },
     "npm": {
-      "publish": true
+      "publish": false
     },
     "github": {
       "release": true
