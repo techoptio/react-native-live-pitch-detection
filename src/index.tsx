@@ -1,23 +1,25 @@
 import NativeReactNativeLivePitchDetection from './NativeReactNativeLivePitchDetection';
 import type {
+  NoteLetter,
   Options,
+  PitchEvent,
   ReactNativeLivePitchDetectionEventCallback,
 } from './types';
 
 let A4 = 440; // A4 note frequency
-const noteNames = [
-  "C",
-  "C#",
-  "D",
-  "D#",
-  "E",
-  "F",
-  "F#",
-  "G",
-  "G#",
-  "A",
-  "A#",
-  "B",
+const noteNames: NoteLetter[] = [
+  'C',
+  'C#',
+  'D',
+  'D#',
+  'E',
+  'F',
+  'F#',
+  'G',
+  'G#',
+  'A',
+  'A#',
+  'B',
 ];
 
 const ReactNativeLivePitchDetection = {
@@ -37,10 +39,7 @@ const ReactNativeLivePitchDetection = {
   },
   addListener: (callback: ReactNativeLivePitchDetectionEventCallback) => {
     return NativeReactNativeLivePitchDetection.onFrequencyDetected((event) => {
-      callback({
-        frequency: event.frequency,
-        note: getNoteFromFrequency(event.frequency),
-      });
+      callback(toPitchEvent(event.frequency));
     });
   },
   isListening: () => {
@@ -48,16 +47,28 @@ const ReactNativeLivePitchDetection = {
   },
 };
 
-function getNoteFromFrequency(frequency: number): string {
-  if (frequency <= 0 || !isFinite(frequency)) return "-";
+function toPitchEvent(frequency: number): PitchEvent {
+  if (frequency <= 0 || !isFinite(frequency)) {
+    return {
+      frequency: null,
+      note: null,
+      noteLetter: null,
+      noteOctave: null,
+    };
+  }
 
-  const noteNumber = 12 * Math.log2(frequency / A4) + 69;
-  const noteIndex = Math.round(noteNumber) % 12;
-  const octave = Math.floor(Math.round(noteNumber) / 12) - 1;
+  const midi = Math.round(12 * Math.log2(frequency / A4) + 69);
+  const noteIndex = ((midi % 12) + 12) % 12;
+  const noteOctave = Math.floor(midi / 12) - 1;
+  const noteLetter = noteNames[noteIndex]!;
 
-  return `${noteNames[noteIndex]}${octave}`;
-};
-
+  return {
+    frequency,
+    note: `${noteLetter}${noteOctave}`,
+    noteLetter,
+    noteOctave,
+  };
+}
 
 export default ReactNativeLivePitchDetection;
 

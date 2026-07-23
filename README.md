@@ -6,6 +6,12 @@ This package was heavily inspired by, but not a direct fork of, https://github.c
 
 This package uses Turbo Modules and is only compatible with the new architecture.
 
+## Breaking changes (2.0.0)
+
+- `PitchEvent.note` is now `string | null` instead of a string with `"-"` when no pitch is detected
+- `PitchEvent.frequency` is now `number | null` instead of a sentinel like `-1` when no pitch is detected
+- Added `PitchEvent.noteLetter` (`NoteLetter | null`) and `PitchEvent.noteOctave` (`number | null`)
+
 ## Installation
 
 ```sh
@@ -59,8 +65,10 @@ if (result === RESULTS.GRANTED) {
 
   // Add listener for pitch events
   const subscription = PitchDetection.addListener((event) => {
-    console.log('Frequency:', event.frequency);
-    console.log('Note:', event.note); // e.g., "C4", "A#3", etc.
+    console.log('Frequency:', event.frequency); // e.g., 261.63, or null
+    console.log('Note:', event.note); // e.g., "C4", "A#3", or null
+    console.log('Letter:', event.noteLetter); // e.g., "C", "A#", or null
+    console.log('Octave:', event.noteOctave); // e.g., 4, or null
   });
 
   // Stop listening when done
@@ -100,8 +108,10 @@ Adds a listener for pitch detection events. Returns an `EventSubscription` that 
 **Event:**
 ```typescript
 type PitchEvent = {
-  frequency: number;  // Detected frequency in Hz
-  note: string;       // Musical note (e.g., "C4", "A#3", "-" if no note detected)
+  frequency: number | null;      // Detected frequency in Hz, or null if no pitch
+  note: string | null;           // Musical note (e.g., "C4", "A#3"), or null
+  noteLetter: NoteLetter | null; // Note letter (e.g., "C", "A#"), or null
+  noteOctave: number | null;     // Scientific pitch octave, or null
 };
 ```
 
@@ -112,6 +122,10 @@ Returns `true` if currently listening, `false` otherwise.
 ## Types
 
 ```typescript
+type NoteLetter =
+  | 'C' | 'C#' | 'D' | 'D#' | 'E' | 'F'
+  | 'F#' | 'G' | 'G#' | 'A' | 'A#' | 'B';
+
 type Options = {
   bufferSize?: number;
   minVolume?: number;
@@ -120,8 +134,10 @@ type Options = {
 };
 
 type PitchEvent = {
-  frequency: number;
-  note: string;
+  frequency: number | null;
+  note: string | null;
+  noteLetter: NoteLetter | null;
+  noteOctave: number | null;
 };
 ```
 
