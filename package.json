@@ -35,6 +35,7 @@
   "scripts": {
     "example": "yarn workspace @techoptio/react-native-live-pitch-detection-example",
     "test": "jest",
+    "test:cpp": "cmake -S shared/tests -B shared/tests/build && cmake --build shared/tests/build && ctest --test-dir shared/tests/build --output-on-failure",
     "typecheck": "tsc",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
