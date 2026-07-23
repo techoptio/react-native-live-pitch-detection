@@ -27,6 +27,7 @@
     "!android/gradlew",
     "!android/gradlew.bat",
     "!android/local.properties",
+    "!shared/tests",
     "!**/__tests__",
     "!**/__fixtures__",
     "!**/__mocks__",
@@ -58,6 +59,8 @@
   },
   "homepage": "https://github.com/techoptio/react-native-live-pitch-detection#readme",
   "publishConfig": {
+    "access": "public",
+    "provenance": true,
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
@@ -114,7 +117,7 @@
       "tagName": "v${version}"
     },
     "npm": {
-      "publish": true
+      "publish": false
     },
     "github": {
       "release": true
