@@ -27,6 +27,7 @@
     "!android/gradlew",
     "!android/gradlew.bat",
     "!android/local.properties",
+    "!shared/tests",
     "!**/__tests__",
     "!**/__fixtures__",
     "!**/__mocks__",

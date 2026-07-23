@@ -127,7 +127,9 @@ jobs:
     runs-on: macos-latest
 
     env:
-      XCODE_VERSION: 26.0.1
+      # macos-latest is macos-26; only iOS 26.2+ simulator runtimes are installed.
+      # Xcode 26.0.1 has no matching runtime → xcodebuild exit 70.
+      XCODE_VERSION: '26.5'
       TURBO_CACHE_DIR: .turbo/ios
       RCT_USE_RN_DEP: 1
       RCT_USE_PREBUILT_RNCORE: 1

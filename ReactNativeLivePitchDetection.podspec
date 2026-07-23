@@ -14,6 +14,7 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/techoptio/react-native-live-pitch-detection.git", :tag => "#{s.version}" }
 
   s.source_files = "ios/**/*.{h,m,mm,cpp}", "shared/**/*.{hpp,cpp,c,h}"
+  s.exclude_files = "shared/tests/**/*"
   s.private_header_files = "ios/**/*.h"
 
 
