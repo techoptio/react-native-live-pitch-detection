@@ -26,5 +26,10 @@
     "strict": true,
     "target": "ESNext",
     "verbatimModuleSyntax": true
-  }
+  },
+  "exclude": [
+    "example",
+    "lib",
+    "shared/tests/build"
+  ]
 }
